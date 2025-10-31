@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Dhimaan Dutta</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00bfff 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s, width 0.3s, height 0.3s;
+            mix-blend-mode: difference;
+        }
+        .cursor.hover {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #00bfff 10%, transparent 60%);
+        }
+
+        /* NAVBAR */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.94);
+            padding: 1.8rem 2rem;
+            z-index: 1000;
+            backdrop-filter: blur(28px);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.12);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        nav.scrolled {
+            padding: 1.1rem 2rem;
+            background: rgba(0, 0, 0, 0.98);
+            box-shadow: 0 20px 50px rgba(0, 191, 255, 0.18);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.3);
+        }
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 4.5rem;
+        }
+        nav a {
+            color: #cccccc;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding: 0.7rem 0;
+            transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+        }
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00bfff, #0099ff, #0077cc);
+            border-radius: 3px;
+            transform: translateX(-50%);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+        }
+        nav a:hover {
+            color: #00bfff;
+            transform: translateY(-3px);
+            text-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
+        }
+        nav a:hover::before {
+            width: 100%;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(0,191,255,0.18) 0%, transparent 65%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.8s ease;
+            z-index: -1;
+        }
+        nav a:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            position: absolute;
+            right: 2rem;
+        }
+        .hamburger span {
+            width: 34px;
+            height: 3.5px;
+            background: linear-gradient(90deg, #00bfff, #0099ff);
+            border-radius: 3px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(9px, -9px);
+        }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            background: radial-gradient(circle at center, #111 0%, #000 70%);
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+        }
+        .hero p {
+            font-size: 2.1rem;
+            margin-top: 1.5rem;
+            color: #00bfff;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* ENQUIRY SECTION */
+        .section {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .section-header {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, #00bfff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #00bfff, #0099ff);
+            border-radius: 2px;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+        }
+
+        .form-container {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 20px;
+            padding: 3rem;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,191,255,0.12) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s;
+        }
+        .form-container:hover::before {
+            opacity: 1;
+        }
+        .form-container:hover {
+            border: 1px solid #00bfff;
+            box-shadow: 0 0 40px rgba(0, 191, 255, 0.35);
+            transform: translateY(-8px);
+        }
+
+        .contact-info {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        .contact-info p {
+            margin: 1rem 0;
+            color: #bbbbbb;
+            font-size: 1.15rem;
+        }
+        .contact-info strong {
+            color: #00bfff;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .input-group {
+            position: relative;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 1.4rem 1.6rem;
+            background: #1a1a1a;
+            border: 1.5px solid #333333;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 1.05rem;
+            transition: all 0.4s;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus {
+            border: 1.5px solid #00bfff;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+            outline: none;
+            background: #0f0f0f;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #777777;
+            font-weight: 500;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+        button {
+            padding: 1.4rem;
+            background: linear-gradient(90deg, #00bfff, #0099ff);
+            color: #000000;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 1.15rem;
+            font-weight: 700;
+            transition: all 0.5s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.7s;
+        }
+        button:hover::before {
+            left: 100%;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #0099ff, #0077cc);
+            box-shadow: 0 0 25px rgba(0, 191, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* SOCIAL LINKS */
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            color: #bbbbbb;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.5s;
+            padding: 1.2rem 2rem;
+            border-radius: 16px;
+            background: rgba(26, 26, 26, 0.6);
+            border: 1.5px solid rgba(0,191,255,0.1);
+            backdrop-filter: blur(8px);
+        }
+        .social-link:hover {
+            color: #00bfff;
+            background: rgba(0, 191, 255, 0.15);
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
+            border: 1.5px solid #00bfff;
+        }
+        .social-logo {
+            width: 48px;
+            height: 48px;
+            filter: grayscale(100%) brightness(0.8);
+            transition: filter 0.5s;
+        }
+        .social-link:hover .social-logo {
+            filter: drop-shadow(0 0 15px #00bfff) brightness(1);
+        }
+
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            nav ul { 
+                position: fixed;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #000;
+                flex-direction: column;
+                gap: 2.5rem;
+                padding: 3rem;
+                transform: translateY(-100%);
+                transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(20px);
+            }
+            nav ul.active { transform: translateY(0); }
+            .hero h1 { font-size: 3.5rem; }
+            .hero p { font-size: 1.8rem; }
+            .section-header { font-size: 2.4rem; }
+            .form-container { padding: 2rem; }
+            .social-container { flex-direction: column; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <nav id="navbar">
+        <div class="nav-container">
+            <ul id="nav-links">
+                <li><a  href="/" class="nav-link">Home</a></li>
+                <li><a  href="/projects" class="nav-link">Projects</a></li>
+                <li><a  href="/about" class="nav-link">About</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <canvas id="particles"></canvas>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Contact Me</h1>
+        <p>Let's Build Something AI-mazing</p>
+    </section>
+
+    <!-- ENQUIRY + CONNECT -->
+    <section class="section">
+        <h2 class="section-header">Get in Touch</h2>
+        <div class="form-container">
+            <div class="contact-info">
+                <p><strong>Phone:</strong> +44 7795807653</p>
+                <p><strong>Email:</strong> DHIMAANMAMS.07@GMAIL.COM</p>
+                <p><strong>Location:</strong> London, United Kingdom</p>
+            </div>
+            <form id="enquiry-form" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+                <div class="input-group">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <!-- SOCIAL LINKS -->
+        <div class="social-container">
+            <a href="https://www.linkedin.com/in/dhimaan-dutta-85251a34a" target="_blank" class="social-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="social-logo">
+                LinkedIn
+            </a>
+            <a href="https://github.com/DhimaanDutta07" target="_blank" class="social-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="social-logo">
+                GitHub
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, input, textarea, .form-container, .social-link, .hamburger').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Navbar Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Particles
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.speedY = Math.random() * 0.6 - 0.3;
+                this.hue = 200;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+                this.hue = (this.hue + 1) % 360;
+            }
+            draw() {
+                ctx.fillStyle = `hsla(${this.hue}, 100%, 70%, 0.15)`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        for (let i = 0; i < 200; i++) particles.push(new Particle());
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        });
+
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.form-container, .social-container').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            observer.observe(el);
+        });
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeInUp {
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Form Success Message (Web3Forms)
+        const form = document.getElementById('enquiry-form');
+        form.addEventListener('submit', function(e) {
+            // Remove alert, let Web3Forms handle
+            const button = form.querySelector('button');
+            button.innerHTML = 'Sending...';
+            button.disabled = true;
+        });
+    </script>
+</body>
+</html>
